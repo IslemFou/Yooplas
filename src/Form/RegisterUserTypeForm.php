@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class RegisterUserTypeForm extends AbstractType
 {
@@ -24,7 +25,7 @@ class RegisterUserTypeForm extends AbstractType
                 'label' => 'Votre prénom',
                 'attr' => [
                     'class' => 'form-control form-control rounded-5',
-                    'placeholder' => 'EX : John'
+                    'placeholder' => 'EX : Islem'
                 ],
                 'constraints' => [
                     new Length([
@@ -42,7 +43,7 @@ class RegisterUserTypeForm extends AbstractType
                 'label' => 'Votre nom',
                 'attr' => [
                     'class' => 'form-control form-control rounded-5',
-                    'placeholder' => 'EX : DUPONT'
+                    'placeholder' => 'EX : FOURATI'
                 ],
                 'constraints' => [
                     new Length([
@@ -85,7 +86,7 @@ class RegisterUserTypeForm extends AbstractType
                     'label' => 'Votre mot de passe',
                     'attr' => [
                         'class' => 'form-control rounded-5',
-                        'placeholder' => 'John2025@',
+                        'placeholder' => 'Islem2025@',
                         'title' => 'Votre mot de passe doit contenir au minimun 8 caractéres, une majuscule, une minuscule et un caractére spécial'
                     ],
                     'constraints' => [
@@ -115,10 +116,26 @@ class RegisterUserTypeForm extends AbstractType
         ;
     }
 
+
+    /**
+     * Configure the options for this form type.
+     *
+     * @param OptionsResolver $resolver The resolver for the options
+     */
+    // On utilise la méthode configureOptions pour configurer les options du formulaire
+
+    //ici on va traiter la vérification de l'email 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'contraints' => [
+                new UniqueEntity([
+                    'entityClass' => User::class,
+                    'fields' => ['email'],
+                    'message' => 'Cette adresse email est déjà utilisée.',
+                ]),
+            ],
         ]);
     }
 }

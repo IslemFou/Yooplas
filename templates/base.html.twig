@@ -45,47 +45,39 @@
   <header class="container position-relative">
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
-        <a class="navbar-brand" href="<?= BASE_URL ?>home.php"><img src="{{ asset('assets/images/logo/logo.svg')}}" style="width: 7rem;" alt="Yoopla_logo"></a>
+        <a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{ asset('assets/images/logo/logo.svg')}}" style="width: 7rem;" alt="Yoopla_logo"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navYoppla" aria-controls="navYoppla" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navYoppla">
           <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link fw-medium p-4" aria-current="page" href="<?= BASE_URL ?>home.php">Acceuil</a>
+              <a class="nav-link fw-medium p-4" aria-current="page" href="{{ path('app_home')}}">Acceuil</a>
             </li>
-            <?php
-            // --------- si l'utilisateur est connecté
-            if (isset($_SESSION['user'])) {
-            ?>
+            
+             {# si l'utilisateur est connecté #}
+            {# if (isset($_SESSION['user']))  #}
+            {% if app.user %}
+          
               <li class="nav-item">
                 <a class="nav-link fw-medium p-4" href="<?= BASE_URL ?>userEvents.php">Mes evenements</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link fw-medium p-4 mx-2" href="<?= BASE_URL ?>reservation/userReservations.php">Mes réservations</a>
               </li>
-            <?php
-            }
-            ?>
-          </ul>
-        </div>
-        <?php
-        // --------- si l'utilisateur n'est pas connecté
-        if (!isset($_SESSION['user'])) {
-        ?>
-          <div class="d-flex m-4">
-            <a href="<?= BASE_URL ?>authentication/login.php" class="btn rounded-5 btn-yoopla-primary px-4" type="submit">Se connecter</a>
-          </div>
-        <?php
-        } else {
-          // --------- si l'utilisateur est connecté
-        ?>
           <div>
             <a href="<?= BASE_URL ?>event/addEvent.php" class="btn rounded-5 btn-yoopla-primary px-3 py-2" id="addEventBtn" type="submit"><i class="bi bi-plus-circle"></i> Créer un evenement</a>
           </div>
-        <?php
-        }
-        ?>
+            {% else %}
+       
+          <div class="d-flex m-4">
+            <a href="{{ path('app_login')}}" class="btn rounded-5 btn-yoopla-primary px-4" type="submit">Se connecter</a>
+          </div>
+               {% endif %}
+
+          </ul>
+        </div>
+      
       </div>
     </nav>
     <!-- dark/light mode -->
@@ -97,27 +89,26 @@
     </div>
     <!-- end switch button -->
 
-    <?php
+    {# <?php
     if (isset($_SESSION['user'])) {
-    ?>
+    ?> #}
+    {% if app.user %}
+    {# debut modal profil #}
       <div
         class="btn position-absolute top-0 end-0 mt-2 nav-link fw-medium"
         type="button"
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasWithBothOptions"
         aria-controls="offcanvasWithBothOptions">
-        <!--menu profile start-->
-        <div class="position-relative mb-2">
-          <img src="{{ asset('assets/images/default-img/default_avatar.jpg')}}" alt="image avatar" class="rounded-circle border border-2 border-white" width="50" height="50">
-          <span class="position-absolute top-100 start-50 connected-span translate-middle p-2 border border-light rounded-circle bg-success-yoopla">
-            <span class="visually-hidden">connecté</span>
-          </span>
-        </div>
-        <?php
- 
-        echo $_SESSION['user']['firstName'];
-        ?>
-        <!-- menu profile end -->
+        <!--bouton profile start-->
+          <div class="position-relative mb-2">
+            <img src="{{ asset('assets/images/default-img/default_avatar.jpg')}}" alt="image avatar" class="rounded-circle border border-2 border-white" width="50" height="50">
+            <span class="position-absolute top-100 start-50 connected-span translate-middle p-2 border border-light rounded-circle bg-success-yoopla">
+              <span class="visually-hidden">connecté</span>
+            </span>
+          </div>
+            {{ app.user.firstName }}
+        <!-- bouton profil profile end -->
       </div>
 
       <div
@@ -128,55 +119,56 @@
         aria-labelledby="offcanvasWithBothOptionsLabel">
         <!-- la page profile affiché -->
         <div class="offcanvas-header">
-          <div class="d-flex align-items-start justify-content-start profileImg position-relative">
-            <img src="<?= BASE_URL . './assets/images/default-img/default_avatar.jpg'; ?>" alt="image avatar" class="rounded-circle" width="50" height="50">
-            <!-- <i class="bi bi-pencil-square position-absolute top-50 start-0 translate-middle-y translate-middle-x" id="editIcon"></i> -->
-            <div>
-              <h5 class="offcanvas-title m-3" id="offcanvasWithBothOptionsLabel">
-                Bonjour, <?php echo $_SESSION['user']['firstName']; ?>
-              </h5>
-            </div>
+              <div class="d-flex align-items-start justify-content-start profileImg position-relative">
+                <img src="assets/images/default-img/default_avatar.jpg" alt="image avatar" class="rounded-circle" width="50" height="50">
+                <!-- <i class="bi bi-pencil-square position-absolute top-50 start-0 translate-middle-y translate-middle-x" id="editIcon"></i> -->
+                <div>
+                  <h5 class="offcanvas-title m-3" id="offcanvasWithBothOptionsLabel">
+                    Bonjour, {{ app.user.firstName }}!
+                  </h5>
+                </div>
 
-          </div>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <p class="fw-medium mb-3"><span class="fw-bold">Votre email: </span><?php echo $_SESSION['user']['email']; ?></p>
-          <p><span class="fw-bold">Votre role: </span> <?php echo $_SESSION['user']['checkAdmin']; ?></p>
-          <?php
-          // Affichage du bouton qui envoie vers l'espace admin
-          if ($_SESSION['user']['checkAdmin'] == 'admin') : ?>
-            <div class="mb-3">
-              <a href="<?= BASE_URL ?>admin/dashboard.php" class="yoopla-secondary text-decoration-none"><i class="bi bi-arrow-up-right-square ms-2"></i> Espace Admin</a>
+              </div>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
             </div>
-          <?php endif; ?>
-          <a href="?action=logout" class="btn btn-yoopla-secondary-outlined">Déconnexion <i class="bi bi-box-arrow-right"></i></a>
+            <div class="offcanvas-body">
+              <p class="fw-medium mb-3"><span class="fw-bold">Votre email: </span>{{ app.user.email }}</p>
+              {# <p><span class="fw-bold">Votre role: </span>{{ app.user.roles }}</p> #}
+              {# <?php
+              // Affichage du bouton qui envoie vers l'espace admin
+              if ($_SESSION['user']['checkAdmin'] == 'admin') : ?> #}
+                <div class="mb-3">
+                  <a href="{{ path('admin')}}" class="yoopla-secondary text-decoration-none"><i class="bi bi-arrow-up-right-square ms-2"></i> Espace Admin</a>
+                  <br>
+                  <a href="{{ path('app_account')}}" class="yoopla-secondary text-decoration-none mt-2"><i class="bi bi-arrow-up-right-square ms-2"></i> Mon profil</a>
+                </div>
+              {# <?php endif; ?> #}
+              <a href="{{ path('app_logout') }}" class="btn btn-yoopla-secondary-outlined">Déconnexion <i class="bi bi-box-arrow-right"></i></a>
 
-        </div>
-        <div class="container py-3 border-top w-75">
-          <a class="navbar-brand" href="<?= BASE_URL ?>home.php"><img src="<?= BASE_URL ?>assets/images/logo/logo.svg" class="w-50" alt="Yoopla_logo"></a>
-          <p class="fs-6 text-body-secondary">© 2025 Islem FOURATI</p>
-        </div>
+            </div>
+            <div class="container py-3 border-top w-75">
+              <a class="navbar-brand" href="{{ path('app_home') }}"><img src="assets/images/logo/logo.svg" class="w-50" alt="Yoopla_logo"></a>
+              <p class="fs-6 text-body-secondary">© 2025 Islem FOURATI</p>
+            </div>
       </div>
-    <?php
-    }
-    ?>
+      {# fin modal profil #}
+{% endif %}
   </header>
   <main class="min-vh-100">
 
 
     {% block body %}
-    {% endblock %}
+    {% endblock %} 
 
 
 </main>
 <footer class="container d-flex justify-content-around py-3 border-top">
 
-       <a class="navbar-brand" href="<?php BASE_URL ?>home.php"><img src="<?= BASE_URL ?>assets/images/logo/logo.svg" class="w-50" alt="Yoopla logo"></a>
+       <a class="navbar-brand" href="{{ path('app_home') }}"><img src="assets/images/logo/logo.svg" class="w-50" alt="Yoopla logo"></a>
        <p class="mb-3 mb-md-0 text-body-secondary w-100">© 2025 Islem FOURATI, Inc</p>
        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
          <li class="ms-3 yoopla-secondary"><a class=" icon-link icon-link-hover" href="#"><i class="bi bi-whatsapp"></i></a></li>
@@ -192,7 +184,6 @@
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
      <!-- fast bootstrap link end -->
 
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
      <!-- Bootstrap popper -->
 
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5-alpha3/dist/js/bootstrap.bundle.min.js"></script>
