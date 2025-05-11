@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Enum\Civility;
 use App\Enum\CivilityEnum;
 use App\Controller\Admin\UserCrudController;
+use App\Entity\Category;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -34,6 +35,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-list', User::class);
+        yield MenuItem::linkToCrud('Catégories', 'fas fa-list', Category::class);
     }
     public function configureFields(string $pageName): iterable
     {
