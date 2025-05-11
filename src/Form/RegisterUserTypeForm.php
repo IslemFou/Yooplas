@@ -60,6 +60,7 @@ class RegisterUserTypeForm extends AbstractType
                 'choice_label' => function ($enum) {
                     return $enum->name;
                 },
+                // 'default_value' => Civility::MADAME,
                 'attr' => [
                     'class' => 'form-control form-control rounded-5',
                     'placeholder' => 'EX : f ou h'
@@ -84,7 +85,8 @@ class RegisterUserTypeForm extends AbstractType
                     'label' => 'Votre mot de passe',
                     'attr' => [
                         'class' => 'form-control rounded-5',
-                        'placeholder' => 'John2025@'
+                        'placeholder' => 'John2025@',
+                        'title' => 'Votre mot de passe doit contenir au minimun 8 caractéres, une majuscule, une minuscule et un caractére spécial'
                     ],
                     'constraints' => [
                         new Length([
