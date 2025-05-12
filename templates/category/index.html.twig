@@ -28,14 +28,10 @@
 						<!-- <p><i class="bi bi-people"></i> Capacité: <?= $event['capacity'] ?></p> -->
 					</div>
 					<div class="d-flex justify-content-center">
-						<a href="<?= $detail_url ?>" class="btn yoopla-primary fw-medium rounded-5 px-4 py-2 shadow mb-3">Voir l'activité</a>
+						<a href="{{ path('app_event', { slug: event.slug }) }}" class="btn yoopla-primary fw-medium rounded-5 px-4 py-2 shadow mb-3">Voir l'activité</a>
 					</div>
 				</div>
                     {# card #}
                 {% endfor %}
                 </div>
-
-                                
-                                
-                                
 {% endblock %}

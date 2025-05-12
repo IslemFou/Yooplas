@@ -37,6 +37,12 @@ class EventCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+
+        $required = false;
+        if ($pageName === Crud::PAGE_NEW) {
+            $required = true;
+        }
+
         return [
             TextField::new('title')->setLabel('Nom de l\'événement')
                 ->setHelp('Nom de l\'événement'),
@@ -53,8 +59,7 @@ class EventCrudController extends AbstractCrudController
                 //une méthode pour changer le nom de la photo
                 ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]')
                 ->setBasePath('uploads/events') // URL de la photo afin de l'afficher
-
-            ,
+                ->setRequired($required),
 
             NumberField::new('capacity')->setLabel('Capacité')
                 ->setHelp('Capacité de l\'événement'),

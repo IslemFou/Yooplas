@@ -50,7 +50,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navYoppla">
-          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 d-flex align-items-center">
             <li class="nav-item">
               <a class="nav-link fw-medium p-4" aria-current="page" href="{{ path('app_home')}}">Acceuil</a>
             </li>
@@ -60,13 +60,13 @@
             {% if app.user %}
           
               <li class="nav-item">
-                <a class="nav-link fw-medium p-4" href="<?= BASE_URL ?>userEvents.php">Mes evenements</a>
+                <a class="nav-link fw-medium p-4" href="{{ path('app_event')}}">Mes evenements</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link fw-medium p-4 mx-2" href="<?= BASE_URL ?>reservation/userReservations.php">Mes réservations</a>
+                <a class="nav-link fw-medium p-4 mx-2" href="#">Mes réservations</a>
               </li>
           <div>
-            <a href="<?= BASE_URL ?>event/addEvent.php" class="btn rounded-5 btn-yoopla-primary px-3 py-2" id="addEventBtn" type="submit"><i class="bi bi-plus-circle"></i> Créer un evenement</a>
+            <a href="#" class="btn rounded-5 btn-yoopla-primary px-3 py-2" id="addEventBtn" type="submit"><i class="bi bi-plus-circle"></i> Créer un evenement</a>
           </div>
             {% else %}
        
@@ -76,17 +76,17 @@
                {% endif %}
 
           </ul>
-        </div>
-      
-      </div>
-    </nav>
-    <!-- dark/light mode -->
-    <div class="form-check form-switch switchBtn position-absolute"
+    <div class="form-check form-switch switchBtn"
       style="--bs-form-switch-width:60px;--bs-form-switch-height:24px"
       title="mode sombre/clair">
       <input class="form-check-input" type="checkbox" role="switch" id="switchSizeLargeChecked" checked />
       <label class="form-check-label fw-medium fs-6 mt-1" for="switchSizeLargeChecked">clair</label>
     </div>
+        </div>
+      
+      </div>
+    </nav>
+    <!-- dark/light mode -->
     <!-- end switch button -->
 
     {# <?php
@@ -168,7 +168,7 @@
 </main>
 <footer class="container d-flex justify-content-around py-3 border-top">
 
-       <a class="navbar-brand" href="{{ path('app_home') }}"><img src="assets/images/logo/logo.svg" class="w-50" alt="Yoopla logo"></a>
+       <a class="navbar-brand" href="{{ path('app_home') }}"><img src="{{ asset('assets/images/logo/logo.svg')}}" class="w-50" alt="Yoopla logo"></a>
        <p class="mb-3 mb-md-0 text-body-secondary w-100">© 2025 Islem FOURATI, Inc</p>
        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
          <li class="ms-3 yoopla-secondary"><a class=" icon-link icon-link-hover" href="#"><i class="bi bi-whatsapp"></i></a></li>

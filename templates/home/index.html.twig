@@ -37,7 +37,7 @@
   <!-- Début carrousel  -->
   <div id="yooplaCarousel" class="carousel slide">
     <div class="carousel-inner">
-      <?php
+      {# <?php
       if (empty($allEvents)) {
         echo '<div class=""><div class="alert alert-warning text-center">Aucun événement trouvé pour le moment.</div></div>';
       } else {
@@ -48,11 +48,11 @@
         foreach ($eventChunks as $chunk) :
           // Determine if this is the active slide
           $activeClass = $isFirstSlide ? 'active' : ''; // Set the 'active' class on the first item
-      ?>
+      ?> #}
           <div class="carousel-item <?= $activeClass ?>">
             <!-- start first slide -->
             <div class=" row g-4 justify-content-center p-3" id="ThreeCardsCarousel">
-              <?php
+              {# <?php
               foreach ($chunk as $event) :
                 // --- Data Preparation & Sanitization (Copied from your userEvents.php for consistency) ---
                 $event_id = (int) $event['ID_Event'];
@@ -80,7 +80,7 @@
                   $image_url_default = BASE_URL . 'assets/images/default-img/default_event.jpg'; // Path to your default image
                 }
 
-              ?>
+              ?> #}
                 <!-- cards -->
                 <div class="col-sm-12 col-md-6 col-lg-4 card rounded-4 shadow mx-2 p-0">
                   <img src="
@@ -105,16 +105,16 @@
                     </a>
                   </div>
                 </div>
-              <?php endforeach; ?>
+              {# <?php endforeach; ?> #}
             </div>
           </div>
           <!-- end carousel item -->
 
-      <?php
+      {# <?php
           $isFirstSlide = false; // Reset the flag for the next iteration
         endforeach;
       }
-      ?>
+      ?> #}
 
       <!-- start second slide -->
       <div class="carousel-item">
@@ -135,8 +135,8 @@
 
     <!-- end carousel inner -->
 
-    <?php if (count($allEvents) > 3) : ?>
-
+    {# <?php if (count($allEvents) > 3) : ?> #}
+{#  #}
       <button class="carousel-control-prev" type="button" data-bs-target="#yooplaCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -145,7 +145,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
-    <?php endif; ?>
+    {# <?php endif; ?> #}
   </div>
   <!-- fin carousel -->
 

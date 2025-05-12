@@ -24,6 +24,10 @@ final class CategoryController extends AbstractController
         //$category = $categoryRepository->findOneBy(['slug' => $slug]); // ca marche aussi comme ca
         $category = $categoryRepository->findOneBySlug($slug); // on va chercher la catégorie par son slug 
 
+        if (!$category) {
+            return $this->redirectToRoute('app_home'); // si la catégorie n'existe pas, on redirige vers la page d'accueil
+        }
+
 
         //dd($category); //dump and die : pour voir ce qu'il y a dans la variable $category
 
