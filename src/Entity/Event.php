@@ -56,6 +56,10 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?Category $category = null;
 
+    #[ORM\ManyToOne(inversedBy: 'UserEvents')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $creator = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -225,6 +229,18 @@ class Event
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCreator(): ?User
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?User $creator): static
+    {
+        $this->creator = $creator;
 
         return $this;
     }

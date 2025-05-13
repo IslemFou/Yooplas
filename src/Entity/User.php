@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\Civility;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -41,6 +43,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(enumType: Civility::class)]
     private ?Civility $civility = null;
+
+    /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'creator')]
+    private Collection $UserEvents;
+
+    public function __construct()
+    {
+        $this->UserEvents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -147,6 +160,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCivility(Civility $civility): static
     {
         $this->civility = $civility;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getUserEvents(): Collection
+    {
+        return $this->UserEvents;
+    }
+
+    public function addUserEvent(Event $userEvent): static
+    {
+        if (!$this->UserEvents->contains($userEvent)) {
+            $this->UserEvents->add($userEvent);
+            $userEvent->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserEvent(Event $userEvent): static
+    {
+        if ($this->UserEvents->removeElement($userEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($userEvent->getCreator() === $this) {
+                $userEvent->setCreator(null);
+            }
+        }
 
         return $this;
     }
