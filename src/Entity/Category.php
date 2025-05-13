@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Event;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,7 +25,7 @@ class Category
     /**
      * @var Collection<int, Event>
      */
-    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'category')]
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'categories')]
     private Collection $events;
 
     public function __construct()
@@ -78,7 +79,8 @@ class Category
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            $event->setCategory($this);
+            $event->addCategory($this);
+            // $event->setCategory($this);
         }
 
         return $this;
@@ -87,10 +89,11 @@ class Category
     public function removeEvent(Event $event): static
     {
         if ($this->events->removeElement($event)) {
+            $event->removeCategory($this);
             // set the owning side to null (unless already changed)
-            if ($event->getCategory() === $this) {
-                $event->setCategory(null);
-            }
+            // if ($event->getCategory() === $this) {
+            //     // $event->setCategory(null);
+            // }
         }
 
         return $this;

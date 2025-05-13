@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Event;
+use App\Entity\Category;
 use Dom\Text;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -83,7 +84,7 @@ class EventCrudController extends AbstractCrudController
                 ->setHelp('Prix de l\'événement'),
 
 
-            AssociationField::new('category')->setLabel('Catégorie associée')
+            AssociationField::new('categories')->setLabel('Catégorie associée')
                 ->setHelp('Catégorie de l\'événement')
                 ->setRequired(true)
                 // ->setFormTypeOption('choice_label', 'name')

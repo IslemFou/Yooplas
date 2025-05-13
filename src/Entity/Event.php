@@ -2,9 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\EventRepository;
+
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Category;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EventRepository;
+
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -53,12 +58,41 @@ class Event
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
-    private ?Category $category = null;
 
     #[ORM\ManyToOne(inversedBy: 'UserEvents')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $creator = null;
+
+
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'events')]
+    private Collection $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
 
     public function getId(): ?int
     {
@@ -221,17 +255,8 @@ class Event
         return $this;
     }
 
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
 
-    public function setCategory(?Category $category): static
-    {
-        $this->category = $category;
 
-        return $this;
-    }
 
     public function getCreator(): ?User
     {
