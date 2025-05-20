@@ -60,10 +60,10 @@
             {% if app.user %}
           
               <li class="nav-item">
-                <a class="nav-link fw-medium p-4" href="{{ path('app_event')}}">Mes evenements</a>
+                <a class="nav-link fw-medium p-4" href="{{ path('event_index')}}">Mes evenements</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link fw-medium p-4 mx-2" href="#">Mes réservations</a>
+                <a class="nav-link fw-medium p-4 mx-2" href="{{ path('app_reservation')}}">Mes réservations</a>
               </li>
           <div>
             <a href="{{ path('event_create') }}" class="btn rounded-5 btn-yoopla-primary px-3 py-2" id="addEventBtn" type="submit"><i class="bi bi-plus-circle"></i> Créer un evenement</a>
@@ -76,18 +76,20 @@
                {% endif %}
 
           </ul>
+    <!-- dark/light mode -->
+
     <div class="form-check form-switch switchBtn"
       style="--bs-form-switch-width:60px;--bs-form-switch-height:24px"
       title="mode sombre/clair">
       <input class="form-check-input" type="checkbox" role="switch" id="switchSizeLargeChecked" checked />
       <label class="form-check-label fw-medium fs-6 mt-1" for="switchSizeLargeChecked">clair</label>
     </div>
+    <!-- end switch button -->
+
         </div>
       
       </div>
     </nav>
-    <!-- dark/light mode -->
-    <!-- end switch button -->
 
     {# <?php
     if (isset($_SESSION['user'])) {
@@ -194,7 +196,21 @@
 
      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
 
+<script>
+        // Récupérer le thème depuis localStorage
+        const theme = localStorage.getItem('theme');
+        if (theme) {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        }
 
+        // Exemple : bouton pour changer le thème
+        document.getElementById('theme-toggle')?.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
 
     </body>
 

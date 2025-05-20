@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-
+use Symfony\Component\Security\Core\Security;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Entity\Category;

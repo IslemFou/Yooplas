@@ -2,9 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use Dom\Text;
 use App\Entity\Event;
 use App\Entity\Category;
-use Dom\Text;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
@@ -19,6 +21,31 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class EventCrudController extends AbstractCrudController
 {
+    
+    
+     private Security $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
+        // 🔹 2. Méthode persistEntity à ajouter ici :
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Event) {
+            return;
+        }
+
+        // Affecte l'utilisateur connecté comme créateur
+        $user = $this->security->getUser();
+        if ($user) {
+            $entityInstance->setCreator($user);
+        }
+
+        parent::persistEntity($entityManager, $entityInstance);
+    }
+    
     public static function getEntityFqcn(): string
     {
         return Event::class;

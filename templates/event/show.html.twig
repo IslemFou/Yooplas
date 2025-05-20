@@ -5,7 +5,7 @@
         {# <h1>Mes évenements</h1> #}
         
         <h6>{{ event.title }}</h6>
-        <p> {{ event.events|length }} évenements </p>
+        <p> {{ events|length }} évenements </p>
     
         {# </header> #}
         {# <main class="container min-vh-100"> #}
@@ -55,11 +55,11 @@
         <div class="d-flex align-items-center flex-wrap justify-content-evenly">
             <p><i class="bi bi-geo"></i>{{ event.city ?? 'information non disponible' }}</p>
             <div class="d-flex justify-content-between align-items-center">
-                 <p class="text-light-dark"><i class="bi bi-clock"></i>{{ event.timeStart|date('H:i') ?? ?? 'information non disponible'}}</p>
+                 <p class="text-light-dark"><i class="bi bi-clock"></i>{{  event.timeStart ? event.timeStart|date('H:i') : 'information non disponible'}}</p>
                 <p>
-                <p class="text-light-dark ms-3"><i class="bi bi-calendar-event mx-2"></i>{{ event.dateStart|date('d/m/Y') ?? 'information non disponible' }}</p>
+                <p class="text-light-dark ms-3"><i class="bi bi-calendar-event mx-2"></i>{{ event.dateStart ? event.dateStart|date('d/m/Y') : 'information non disponible' }}</p>
             </div>
-            <p><i class="bi bi-people"></i>{{event.capacity ?? 'information non disponible'}} personnes</p>
+            <p><i class="bi bi-people"></i>{{event.capacity ? 'information non disponible'}} personnes</p>
             <div class="fs-6 btn rounded-5 px-4 fw-medium shadow-sm yoopla-secondary mb-3"><a href="{{ path('app_category', { slug : event.category.slug})}}" class="text-decoration-none text-yoopla-blue">{{ event.category.name }}</a></div>
         </div>
         <!-- avatar -->
@@ -75,7 +75,7 @@
         </div>
         <div class="m-3 container bg-discovery-subtle rounded-4 p-3">
             <h6>Description</h6>
-            <p>{{ event.description|raw ?? 'information non disponible' }}</p>
+            <p>{{ event.description|raw ? 'information non disponible' }}</p>
         </div>
         <!-- Bouton de réservation -->
         <div class="d-flex justify-content-center">

@@ -19,13 +19,16 @@ class EventTypeForm extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Title',
-                'attr' => ['placeholder' => 'Enter the title of the event']
+                'attr' => [
+                    'placeholder' => 'Enter the title of the event', 
+                    'class' => 'form-control col-6'
+                    ]
             ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name', // ou le champ que tu veux afficher
                 'multiple' => true,
-                'expanded' => true, // true = cases à cocher, false = liste déroulante multiple
+                'expanded' => false, // true = cases à cocher, false = liste déroulante multiple
                 'label' => 'Catégories',
             ])
             ->add('description', TextareaType::class, [

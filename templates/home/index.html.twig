@@ -29,6 +29,31 @@
   <button class="btn rounded-5 px-4 mx-4 mt-2 fw-medium shadow-sm" style="color:rgb(18, 115, 74);" id="coloredButtons">Yoga</button>
 </div>
 
+<!-- search bar -->
+	<form method="POST" action="" title="Formulaire de recherche">
+		<div class="container m-5 rounded-5 shadow p-2 mx-auto d-flex justify-content-around align-items-center w-75">
+
+			<div class="form-floating border-0">
+				<input type="search" name="city" class="form-control border-0" id="searchLocation" placeholder="Paris ..." aria-label="Lieu">
+				<label for="searchLocation"><i class="bi bi-geo me-2"></i>Lieu souhaité</label>
+			</div>
+			<p class="fw-bold fs-5 text-yoopla-red">Ou</p>
+
+			<div class="form-floating border-0">
+				<input type="search" name="title" class="form-control border-0" id="searchEvent" placeholder="Activité, événement ..." aria-label="Événement">
+				<label for="searchEvent"><i class="bi bi-balloon me-2"></i>Événement souhaité</label>
+			</div>
+
+			<div>
+				<button type="submit" class="border-0 bg-transparent">
+					<i class="bi bi-search-heart text-yoopla-red fs-3"></i>
+				</button>
+			</div>
+
+		</div>
+	</form>
+	<!-- Résultat de recherche -->
+
 <!-- Section 3: activités en cours-->
 <section class="container" id="section-activites">
   <h5 class="text-yoopla-red fw-medium">Les activités en cours</h5>
@@ -37,18 +62,24 @@
   <!-- Début carrousel  -->
   <div id="yooplaCarousel" class="carousel slide">
     <div class="carousel-inner">
-      {# <?php
-      if (empty($allEvents)) {
-        echo '<div class=""><div class="alert alert-warning text-center">Aucun événement trouvé pour le moment.</div></div>';
-      } else {
-        //chunk the events array into groups of three
-        $eventChunks = array_chunk($allEvents, 3);
+      
+      {% if allEvents is empty %}
+      {# if (empty($allEvents))  #}
+      {
+        <div class=""><div class="alert alert-warning text-center">Aucun événement trouvé pour le moment.</div></div>;
+        {% else %}
+
+        {# chunk the events array into groups of three #}
+        {# $eventChunks = array_chunk($allEvents, 3); #}
+        {% set eventChunks = allEvents|batch(3) %}
+
         $isFirstSlide = true; // Flag to set the 'active' class on the first item
 
         foreach ($eventChunks as $chunk) :
           // Determine if this is the active slide
           $activeClass = $isFirstSlide ? 'active' : ''; // Set the 'active' class on the first item
-      ?> #}
+       
+       
           <div class="carousel-item <?= $activeClass ?>">
             <!-- start first slide -->
             <div class=" row g-4 justify-content-center p-3" id="ThreeCardsCarousel">
@@ -150,7 +181,7 @@
   <!-- fin carousel -->
 
   <div class="container d-flex justify-content-center m-4">
-    <a href="home.php" class="btn btn-yoopla-secondary-outlined rounded-5 px-5 py-3 fw-medium shadow-sm icon-link icon-link-hover position-relative">Afficher plus d'activités <i class="bi bi-arrow-right mx-3 position-absolute top-50 end-0 translate-middle-y"></i></a>
+    <a href="{{ path('event_index')}}" class="btn btn-yoopla-secondary-outlined rounded-5 px-5 py-3 fw-medium shadow-sm icon-link icon-link-hover position-relative">Afficher plus d'activités <i class="bi bi-arrow-right mx-3 position-absolute top-50 end-0 translate-middle-y"></i></a>
   </div>
 </section>
 

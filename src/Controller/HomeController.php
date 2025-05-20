@@ -15,3 +15,8 @@ final class HomeController extends AbstractController
         return $this->render('home/index.html.twig');
     }
 }
+
+// d'azbord récupérer mon entité event 
+//entity manager
+//event repository
+//category repository
