@@ -16,6 +16,51 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
+        public function findLimited(int $limit = 3): array
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('e.date_start', 'ASC') // ou autre critère
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+        public function searchByCityAndTitle(?string $city, ?string $title): array
+    {
+        $qb = $this->createQueryBuilder('e');
+
+        if ($city) {
+            $qb->andWhere('e.city LIKE :city')
+            ->setParameter('city', '%' . $city . '%');
+        }
+
+        if ($title) {
+            $qb->andWhere('e.title LIKE :title')
+            ->setParameter('title', '%' . $title . '%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function searchEvents(?string $city, ?string $title): array
+{
+    $qb = $this->createQueryBuilder('e');
+
+    if (!empty($city)) {
+        $qb->andWhere('e.city LIKE :city')
+           ->setParameter('city', '%' . $city . '%');
+    }
+
+    if (!empty($title)) {
+        $qb->andWhere('e.title LIKE :title')
+           ->setParameter('title', '%' . $title . '%');
+    }
+
+    return $qb->getQuery()->getResult();
+}
+
+
     //    /**
     //     * @return Event[] Returns an array of Event objects
     //     */

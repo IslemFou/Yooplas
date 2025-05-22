@@ -23,9 +23,6 @@ final class EventController extends AbstractController
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
-
-        
-        
         // if ($event) {
         // Récupère la liste de tous les événements
         $events = $eventRepository->findAll();
@@ -71,7 +68,7 @@ final class EventController extends AbstractController
 
                 try {
                     // Déplace l'image dans le répertoire défini
-                    $photo->move($this->getParameter('article_directory'), $newPhoto);
+                    $photo->move($this->getParameter('event_directory'), $newPhoto);
                     $event->setPhoto($newPhoto);
                 } catch (FileException $th) {
                     $this->addFlash('error', 'Erreur lors de l\'upload de l\'image');
@@ -129,13 +126,13 @@ final class EventController extends AbstractController
     }
 
     #[Route('/event/{id}/edit', name: 'event_edit')]
-public function edit(
+    public function edit(
     int $id,
     Request $request,
     EntityManagerInterface $entityManager,
     SluggerInterface $slugger,
     EventRepository $eventRepository
-): Response {
+    ): Response {
     $event = $eventRepository->find($id);
 
     if (!$event) {
@@ -154,7 +151,7 @@ public function edit(
             $newPhoto = $safePhoto . '-' . uniqid() . '.' . $photo->guessExtension();
 
             try {
-                $photo->move($this->getParameter('article_directory'), $newPhoto);
+                $photo->move($this->getParameter('event_directory'), $newPhoto);
                 $event->setPhoto($newPhoto);
             } catch (FileException $e) {
                 $this->addFlash('error', 'Erreur lors de l\'upload de l\'image');
@@ -176,28 +173,40 @@ public function edit(
 }
 
 
-#[Route('/event/{id}/delete', name: 'event_delete', methods: ['POST'])]
-public function delete(
-    int $id,
-    Request $request,
-    EntityManagerInterface $entityManager,
-    EventRepository $eventRepository
-): Response {
-    $event = $eventRepository->find($id);
+    #[Route('/event/{id}/delete', name: 'event_delete', methods: ['POST'])]
+    public function delete(
+        int $id,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        EventRepository $eventRepository
+    ): Response {
+        $event = $eventRepository->find($id);
 
-    if (!$event) {
-        throw $this->createNotFoundException('Événement non trouvé');
+        if (!$event) {
+            throw $this->createNotFoundException('Événement non trouvé');
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($event);
+            $entityManager->flush();
+            $this->addFlash('success', 'Événement supprimé avec succès');
+        }
+
+        return $this->redirectToRoute('event_index');
     }
 
-    if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
-        $entityManager->remove($event);
-        $entityManager->flush();
-        $this->addFlash('success', 'Événement supprimé avec succès');
-    }
+#[Route('/evenements', name: 'event_search')]
+public function search(Request $request, EventRepository $eventRepository): Response
+{
+    $city = $request->request->get('city');
+    $title = $request->request->get('title');
 
-    return $this->redirectToRoute('event_index');
+    // Recherche conditionnelle
+    $searchResults = $eventRepository->searchEvents($city, $title);
+
+    return $this->render('event/search.html.twig', [
+        'searchResults' => $searchResults,
+    ]);
 }
-
-
 
 }

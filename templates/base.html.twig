@@ -54,9 +54,6 @@
             <li class="nav-item">
               <a class="nav-link fw-medium p-4" aria-current="page" href="{{ path('app_home')}}">Acceuil</a>
             </li>
-            
-             {# si l'utilisateur est connecté #}
-            {# if (isset($_SESSION['user']))  #}
             {% if app.user %}
           
               <li class="nav-item">
@@ -91,11 +88,7 @@
       </div>
     </nav>
 
-    {# <?php
-    if (isset($_SESSION['user'])) {
-    ?> #}
     {% if app.user %}
-    {# debut modal profil #}
       <div
         class="btn position-absolute top-0 end-0 mt-2 nav-link fw-medium"
         type="button"
@@ -123,7 +116,7 @@
         <div class="offcanvas-header">
               <div class="d-flex align-items-start justify-content-start profileImg position-relative">
                 <img src="assets/images/default-img/default_avatar.jpg" alt="image avatar" class="rounded-circle" width="50" height="50">
-                <!-- <i class="bi bi-pencil-square position-absolute top-50 start-0 translate-middle-y translate-middle-x" id="editIcon"></i> -->
+              
                 <div>
                   <h5 class="offcanvas-title m-3" id="offcanvasWithBothOptionsLabel">
                     Bonjour, {{ app.user.firstName }}!

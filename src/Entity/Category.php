@@ -22,6 +22,22 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $couleur = null;
+
+    public function getCouleur(): ?string
+    {
+        return $this->couleur;
+    }
+
+    public function setCouleur(?string $couleur): self
+    {
+        $this->couleur = $couleur;
+
+        return $this;
+    }
+
+
     /**
      * @var Collection<int, Event>
      */

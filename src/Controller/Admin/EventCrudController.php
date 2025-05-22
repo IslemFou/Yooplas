@@ -30,7 +30,7 @@ class EventCrudController extends AbstractCrudController
         $this->security = $security;
     }
 
-        // 🔹 2. Méthode persistEntity à ajouter ici :
+        // 🔹 2. Méthode persistEntity :
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if (!$entityInstance instanceof Event) {

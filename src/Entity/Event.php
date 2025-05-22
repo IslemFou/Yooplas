@@ -44,7 +44,7 @@ class Event
     private ?\DateTime $time_end = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $zip_code = null;
+    private ?string $zipCode = null;
 
     #[ORM\Column(length: 50)]
     private ?string $city = null;
@@ -197,12 +197,12 @@ class Event
 
     public function getZipCode(): ?string
     {
-        return $this->zip_code;
+        return $this->zipCode;
     }
 
-    public function setZipCode(string $zip_code): static
+    public function setZipCode(string $zipCode): static
     {
-        $this->zip_code = $zip_code;
+        $this->zipCode = $zipCode;
 
         return $this;
     }

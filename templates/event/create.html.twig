@@ -3,14 +3,15 @@
 {% block title %}Créer un nouvel événement{% endblock %}
 
 {% block body %}
-    <section class="container">
-<div class="row mt-4">
+    <section class="container mt-4 mx-auto">
+<div class="row mt-4 mx-auto w-75">
     <h1>Créer un nouvel événement</h1>
 
     {{ form_start(form) }}
+    
         {{ form_widget(form) }}
 
-        <button type="submit" class="btn btn-yoopla-primary rounded rounded-4 mt-4 btn-lg">Créer l'événement</button>
+        <button type="submit" class="btn btn-yoopla-primary rounded rounded-5 px-6 py-2 m-4 btn-lg">Créer l'événement</button>
     {{ form_end(form) }}
 
     <a href="{{ path('event_index') }}">Retour à la liste des événements</a>
