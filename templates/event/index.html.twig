@@ -3,9 +3,55 @@
 {% block title %}Event List{% endblock %}
 
 {% block body %}
-    <h1>Event List</h1>
+<section class="container mt-5"> 
+    <h1 class="fs-5 text-center mb-5">Mes événements</h1>
 
-    <table>
+            {% for event in uEvents %}
+                {% set event_id = event.id %}
+                {% set event_title = event.title %}
+                {% set event_description = event.description %}
+                {% set event_city = event.city %}
+                {% set event_categorie = event.categories[0].name %}
+                {% set image_event = '/uploads/events/' ~ event.photo %}
+                {% set event_creator = event.creator %} 
+
+<!-- horzontal card -->
+        <div class="card card-userEvents flex-row overflow-hidden rounded-4 shadow m-1 mb-5 p-0">
+          <div class="d-flex col-md-4" style="width: 20%; height: 100%;">
+            <img src="{{ image_event }}" alt="image evenement" class="img-fluid w-100 h-100" style="object-fit: cover;">
+          </div>
+          <div class="w-100 p-3 mb-3">
+
+            <div class="d-flex justify-content-start align-items-center position-relative">
+              <p><i class="bi bi-geo">{{event_city}}</i>
+               
+               </p>
+              <span class="badge mb-3 ms-3 text-yoopla-blue rounded-pill p-2 fw-medium border">{{event_categorie}}</span>
+              <!-- Edit button -->
+              <div>
+              <a class=" btn border-0 position-absolute top-0 end-0 translate-middle-y btn-yoopla-secondary-outlined mt-3" href="{{ path('event_edit', { 'id': event.id }) }}" role="button" id="edit">
+                <i class="bi bi-pencil-square"></i></i>
+              </a>
+              <!-- Delete button -->
+              <a class=" btn border-0 position-absolute top-50 end-0 mt-5 translate-middle-y border btn-outline-danger mt-3" href="{{ path('event_delete', { 'id': event.id }) }}" role="button" id="delete"><i class="bi bi-trash3"></i>
+              </a>
+              </div>
+            </div>
+            <a href="{{ path('app_event', { 'slug': event.slug }) }}" class="text-decoration-none text-dark card-title fs-5">{{ event_title }}</a>
+            <p class="card-text">{{ event_description|slice(0, 100) ~ '...' }}
+            </p>
+          </div>
+        </div>
+        <!-- end horzontal card -->
+            {% endfor %}
+            </section>
+{% endblock %}
+
+
+
+
+
+    {# <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -15,7 +61,6 @@
             </tr>
         </thead>
         <tbody>
-            {% for event in events %}
                 <tr>
                     <td>{{ event.id }}</td>
                     <td>{{ event.title }}</td>
@@ -24,16 +69,10 @@
                         <a href="{{ path('app_event', { 'slug': event.slug }) }}">Show</a>
                         <a href="{{ path('event_edit', { 'id': event.id }) }}">Edit</a>
                        <form method="post" action="{{ path('event_delete', {'id': event.id}) }}" onsubmit="return confirm('Supprimer cet événement ?');">
-    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
-    <button class="btn btn-danger btn-sm">Supprimer</button>
-</form>
-
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
+                        <button class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
                     </td>
                 </tr>
-            {% endfor %}
         </tbody>
-    </table>
-
-    <a href="{{ path('event_create') }}">Create new Event</a>
-
-{% endblock %}
+    </table> #}

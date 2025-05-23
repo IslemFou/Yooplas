@@ -14,6 +14,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
@@ -35,9 +38,19 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-list', User::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'fa-solid fa-users', User::class);
         yield MenuItem::linkToCrud('Catégories', 'fas fa-list', Category::class);
-        yield MenuItem::linkToCrud('Evenements', 'fas fa-list', Event::class);
+        yield MenuItem::linkToCrud('Evenements', 'fa-solid fa-calendar-days', Event::class);
+        // pour aller sur le site
+        yield MenuItem::linkToUrl('Retour au site', 'fas fa-home', '/');
+        
+        // pour aller vers les événements de l'utilisateur connecté
+        yield MenuItem::linkToRoute('Mes événements', 'fas fa-calendar-check', 'user_events');
+        // pour se déconnecter
+        yield MenuItem::linkToLogout('Se déconnecter', 'fas fa-sign-out-alt');
+
+      
+    ;
     }
     public function configureFields(string $pageName): iterable
     {

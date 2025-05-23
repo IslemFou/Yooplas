@@ -35,7 +35,26 @@ final class EventController extends AbstractController
         ]);
     }
 
-        #[Route('/event/create', name: 'event_create')]
+    #[Route('/user-events', name: 'user_events')]
+    public function userEvents(EventRepository $eventRepository): Response
+    {
+        $user = $this->getUser();
+
+        // Redirection si l’utilisateur n’est pas connecté
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Récupère les événements créés par l'utilisateur connecté
+        $uEvents = $eventRepository->findBy(['creator' => $user]);
+        
+
+        return $this->render('event/index.html.twig', [
+            'uEvents' => $uEvents,
+        ]);
+    }
+
+    #[Route('/event/create', name: 'event_create')]
     public function create(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, CategoryRepository $categoryRepository): Response
     {
         // dd("test");
@@ -173,7 +192,7 @@ final class EventController extends AbstractController
 }
 
 
-    #[Route('/event/{id}/delete', name: 'event_delete', methods: ['POST'])]
+    #[Route('/event/{id}/delete', name: 'event_delete', methods: ['GET'])]
     public function delete(
         int $id,
         Request $request,
@@ -181,18 +200,19 @@ final class EventController extends AbstractController
         EventRepository $eventRepository
     ): Response {
         $event = $eventRepository->find($id);
+        
 
         if (!$event) {
             throw $this->createNotFoundException('Événement non trouvé');
         }
 
-        if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
+        // if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
             $entityManager->remove($event);
             $entityManager->flush();
             $this->addFlash('success', 'Événement supprimé avec succès');
-        }
+        // }
 
-        return $this->redirectToRoute('event_index');
+        return $this->redirectToRoute('user_events');
     }
 
 #[Route('/evenements', name: 'event_search')]

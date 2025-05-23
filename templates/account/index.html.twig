@@ -1,9 +1,50 @@
 {% extends 'base.html.twig' %}
 
-
-
 {% block body %}
-    <div class="container">
-        <h1>profil</h1>
-        </header>
+<div class="container mt-4">
+    <div class="row">
+        <!-- Bloc d'informations utilisateur -->
+        <div class="col-6">
+            <div class="container">
+                <div class="card-header bg-primary text-white">
+                    Mes informations
+                </div>
+                <div class="card-body">
+                    {% if user.picture %}
+                        <div class="text-center mb-3">
+                            <img src="{{ asset('uploads/profile/' ~ user.picture) }}" alt="Photo de profil" class="rounded-circle" width="120">
+                        </div>
+                    {% endif %}
+                    <p><strong>Email :</strong> {{ user.email }}</p>
+                    <p><strong>Prénom :</strong> {{ user.civility.label()  }} {{ user.firstName }}</p>
+                    <p><strong>Nom :</strong> {{ user.lastName }}</p>
+                    <p><strong>Civilité :</strong> {{ user.civility.label()  }}</p>
+                    <p><strong>Rôles :</strong> {{ user.roles|join(', ') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bloc de formulaire -->
+        <div class="col-6">
+            <div class="container">
+                <div class="card-header bg-secondary text-white">
+                    Modifier mes informations
+                </div>
+                <div class="card-body">
+                    {{ form_start(accountForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                        {{ form_row(accountForm.picture) }}
+                        {{ form_row(accountForm.firstName) }}
+                        {{ form_row(accountForm.lastName) }}
+                        {{ form_row(accountForm.civility) }}
+                    
+                        {{ form_row(accountForm.email) }}
+            
+                        {{ form_row(accountForm.roles) }}
+                        {{ form_row(accountForm.submit) }}
+                    {{ form_end(accountForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

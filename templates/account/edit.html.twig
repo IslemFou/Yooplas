@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+    <div class="container">
+        <h1>profil</h1>
+        </header>
+        <section class="container">
+{{ form_start(accountForm, {'attr': {'enctype': 'multipart/form-data'}}) }}*
+    {% if user.picture %}
+        <div class="mb-3">
+            <label>Photo actuelle :</label><br>
+            <img src="{{ asset('uploads/profile/' ~ user.picture) }}" alt="Photo de profil" width="150" class="img-thumbnail">
+        </div>
+    {% endif %}
+    {{ form_row(accountForm.picture) }}
+    {{ form_row(accountForm.firstName) }}
+    {{ form_row(accountForm.lastName) }}
+    {{ form_row(accountForm.civility) }}
+    {{ form_row(accountForm.email) }}
+    {{ form_row(accountForm.roles) }}
+ 
+    {{ form_row(accountForm.submit) }}
+{{ form_end(accountForm) }}
+        
+        </section>
+            <div class=" mt-5">
+                <a href="index.php" class="text-decoration-none btn-yoopla-secondary-outlined rounded-5 px-5 py-3 fw-medium shadow-sm icon-link icon-link-hover"><i class=" bi bi-arrow-left-square"></i>Retour à la page d'accueil</a>
+            </div>
+{% endblock %}
