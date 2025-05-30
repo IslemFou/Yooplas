@@ -269,4 +269,5 @@ class Event
 
         return $this;
     }
+
 }

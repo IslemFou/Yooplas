@@ -44,8 +44,15 @@ class EventRepository extends ServiceEntityRepository
     }
 
     public function searchEvents(?string $city, ?string $title): array
+    //
 {
     $qb = $this->createQueryBuilder('e');
+    //createQueryBuilder est une méthode fournie par Doctrine (le système ORM de Symfony) pour construire dynamiquement des requêtes SQL en PHP, de façon orientée objet.
+    //Construire la requête dynamiquement (ajouter les conditions selon ce que l'utilisateur a rempli).
+
+    //Éviter d'écrire manuellement du SQL brut.
+
+    //Rester dans un style Symfony/Doctrine propre et maintenable. 
 
     if (!empty($city)) {
         $qb->andWhere('e.city LIKE :city')

@@ -32,7 +32,7 @@
 {% endif %}
 
 <!-- search bar -->
-	<form method="POST" action="" title="Formulaire de recherche">
+	<form method="GET" action="{{ path('app_home') }}" title="Formulaire de recherche">
 		<div class="container m-5 rounded-5 shadow p-2 mx-auto d-flex justify-content-around align-items-center w-75">
 
 			<div class="form-floating border-0">
@@ -55,13 +55,39 @@
 		</div>
 	</form>
   {# Résultat de la recherche #}
-{% if searchResults is defined %}
-    {% if searchResults is not empty %}
+{% if result is defined %}
+    {% if result is not empty %}
         <div class="container rounded-3 p-3">
             <h5 class="fw-medium text-center p-4">Résultats de recherche :</h5>
-            {% for result in searchResults %}
-                <p><strong>{{ result.title }}</strong> à <strong>{{ result.city }}</strong></p>
+            <div class="d-flex flex-wrap justify-content-center">
+            {% for eventSearch in result %}
+
+            <!-- Debut card -->
+						<div class="card col-sm-12 col-md-4 col-lg-3 rounded-4 shadow m-2 mb-5" style="height:40rem;">
+		
+							<img src="{{ asset('uploads/events/' ~ (eventSearch.photo is not empty ? eventSearch.photo : 'default-img/default_event.jpg')) }}" class="card-img-top rounded-top-4 img-fluid" style="height:25rem; width:100%; object-fit: cover;" alt="image evenement">
+							<div class="card-body">
+								<div class="mx-2 d-flex justify-content-between">
+									<p class=" small fs-6 mb-0"><i class="fbi bi-geo">{{ eventSearch.city }}</i></p>
+                  {% for category in eventSearch.categories %}
+                    <span class="badge small mb-3 text-yoopla-blue rounded-pill p-2 fw-medium border">{{ category.name }}</span>
+                  {% else %}
+                    <span class="badge small mb-3 text-yoopla-blue rounded-pill p-2 fw-medium border">Sans catégorie</span>
+                  {% endfor %}
+									{# <span class="badge small mb-3 text-yoopla-blue rounded-pill p-2 fw-medium border">{{ eventSearch.categories[0].name }}</span> #}
+								</div>
+								<h5 class="mb-2 fs-6 card-title">{{ eventSearch.title }}</h5>
+								
+								<p class="small card-text text-muted">{{  (eventSearch.description|length > 90 ? eventSearch.description[:90] ~ '...' : eventSearch.description)|raw }}</p>
+							</div>
+							<div class="d-flex justify-content-center">
+								<a href="{{ path('app_event', { slug: eventSearch.slug }) }}" class="btn yoopla-primary fw-medium rounded-5 px-4 py-2 shadow mb-3">Voir l'activité</a>
+							</div>
+						</div>
+						<!-- fin card --> 
+
             {% endfor %}
+            </div>
         </div>
     {% else %}
         <div class="container p-3">

@@ -30,14 +30,14 @@ final class HomeController extends AbstractController
 
         $info = null;
 
-        if ($request->isMethod('POST')) {
-            $city = trim($request->request->get('city'));
-            $title = trim($request->request->get('title'));
+        if ($request->isMethod('GET')) {
+            $city = trim($request->query->get('city'));
+            $title = trim($request->query->get('title'));
 
             if (empty($city) && empty($title)) {
                 $info = ['type' => 'danger', 'message' => 'Veuillez entrer un terme de recherche.'];
             } else {
-                $result = $eventRepository->searchEvent($city, $title);
+                $result = $eventRepository->searchByCityAndTitle($city, $title);
             }
         }
         // dd($categories);
