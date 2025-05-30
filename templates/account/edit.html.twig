@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+:{% extends 'base.html.twig' %}
 
 
 
@@ -7,11 +7,17 @@
         <h1>profil</h1>
         </header>
         <section class="container">
-{{ form_start(accountForm, {'attr': {'enctype': 'multipart/form-data'}}) }}*
+{{ form_start(accountForm, {
+    'attr': {
+        'enctype': 'multipart/form-data',
+        'data-turbo': 'false'
+    }
+}) }}
+
     {% if user.picture %}
         <div class="mb-3">
             <label>Photo actuelle :</label><br>
-            <img src="{{ asset('uploads/profile/' ~ user.picture) }}" alt="Photo de profil" width="150" class="img-thumbnail">
+            <img src="{{ asset('uploads/profils/' ~ user.picture) }}" style="object-fit: cover;" alt="Photo de profil" width="150" class="img-thumbnail">
         </div>
     {% endif %}
     {{ form_row(accountForm.picture) }}
@@ -19,7 +25,6 @@
     {{ form_row(accountForm.lastName) }}
     {{ form_row(accountForm.civility) }}
     {{ form_row(accountForm.email) }}
-    {{ form_row(accountForm.roles) }}
  
     {{ form_row(accountForm.submit) }}
 {{ form_end(accountForm) }}

@@ -97,8 +97,7 @@
         aria-controls="offcanvasWithBothOptions">
         <!--bouton profile start-->
           <div class="position-relative mb-2">
-            <img src="{{ asset('assets/images/default-img/default_avatar.jpg')}}" alt="image avatar" class="rounded-circle border border-2 border-white" width="50" height="50">
-            <span class="position-absolute top-100 start-50 connected-span translate-middle p-2 border border-light rounded-circle bg-success-yoopla">
+           <img src="{{ asset('uploads/profils/' ~ app.user.picture )}}" alt="image avatar" class="rounded-circle border border-2 border-white" width="50" height="50" style="object-fit: cover;">
               <span class="visually-hidden">connecté</span>
             </span>
           </div>
@@ -115,7 +114,7 @@
         <!-- la page profile affiché -->
         <div class="offcanvas-header">
               <div class="d-flex align-items-start justify-content-start profileImg position-relative">
-                <img src="assets/images/default-img/default_avatar.jpg" alt="image avatar" class="rounded-circle" width="50" height="50">
+                <img src="{{ asset('uploads/profils/' ~ app.user.picture )}}" alt="image avatar" style="object-fit: cover;" class="rounded-circle border border-2 border-white" width="50" height="50">
               
                 <div>
                   <h5 class="offcanvas-title m-3" id="offcanvasWithBothOptionsLabel">
@@ -132,22 +131,26 @@
             </div>
             <div class="offcanvas-body">
               <p class="fw-medium mb-3"><span class="fw-bold">Votre email: </span>{{ app.user.email }}</p>
-              {# <p><span class="fw-bold">Votre role: </span>{{ app.user.roles }}</p> #}
-              {# <?php
-              // Affichage du bouton qui envoie vers l'espace admin
-              if ($_SESSION['user']['checkAdmin'] == 'admin') : ?> #}
-                <div class="mb-3">
-                  <a href="{{ path('admin')}}" class="yoopla-secondary text-decoration-none"><i class="bi bi-arrow-up-right-square ms-2"></i> Espace Admin</a>
+            <p class="fw-medium mb-3">
+              <span class="fw-bold">Vos rôles: </span>{{ app.user.roles|join(', ') }}
+            </p>
+              {% if is_granted('ROLE_ADMIN') %}
+                          <div class="mb-3">
+                              <a href="{{ path('admin') }}" class="yoopla-secondary text-decoration-none">
+                                  <i class="bi bi-arrow-up-right-square ms-2"></i> Espace Admin
+                              </a>
+                              <br>
+                          </div>
+                      {% endif %}
                   <br>
-                  <a href="{{ path('app_account')}}" class="yoopla-secondary text-decoration-none mt-2"><i class="bi bi-arrow-up-right-square ms-2"></i> Mon profil</a>
+                  <p>
+                  <a href="{{ path('app_account')}}" class="yoopla-secondary text-decoration-none mt-2"><i class="bi bi-arrow-up-right-square ms-2"></i> Mon profil</a></p> 
+              <p class=" mb-3"><a href="{{ path('app_logout') }}" class="btn btn-yoopla-secondary-outlined">Déconnexion <i class="bi bi-box-arrow-right"></i></a></p>
                 </div>
-              {# <?php endif; ?> #}
-              <a href="{{ path('app_logout') }}" class="btn btn-yoopla-secondary-outlined">Déconnexion <i class="bi bi-box-arrow-right"></i></a>
-
-            </div>
             <div class="container py-3 border-top w-75">
               <a class="navbar-brand" href="{{ path('app_home') }}"><img src="assets/images/logo/logo.svg" class="w-50" alt="Yoopla_logo"></a>
               <p class="fs-6 text-body-secondary">© 2025 Islem FOURATI</p>
+            </div>
             </div>
       </div>
       {# fin modal profil #}
@@ -213,6 +216,27 @@
             localStorage.setItem('theme', newTheme);
         });
     </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.querySelector('#account_type_form_picture');
+    const previewImg = document.querySelector('#image-preview');
+
+    if (fileInput && previewImg) {
+        fileInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImg.src = e.target.result;
+                    previewImg.classList.remove('d-none');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+
 
     </body>
 

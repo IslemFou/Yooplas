@@ -19,7 +19,7 @@ class EventRepository extends ServiceEntityRepository
         public function findLimited(int $limit = 3): array
     {
         return $this->createQueryBuilder('e')
-            ->orderBy('e.date_start', 'ASC') // ou autre critère
+            ->orderBy('e.date_start', 'DESC') // ou autre critère
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();

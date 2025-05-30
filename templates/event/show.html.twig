@@ -19,8 +19,7 @@
     <div>
         <h5 class="fw-medium m-2">Organisateur</h5>
         <div class="d-flex align-items-center justify-content-start">
-        {# <?= BASE_URL . '/assets/images/default-img/default_avatar.jpg'; ?> #}
-            <img src="{{ asset('assets/images/default-img/default_avatar.jpg')}}" class="rounded-circle" width="50" height="50" alt="image de profil par défaut" title="Organisateur de l'evenement">
+            <img src="{{ event.creator.picture ? asset('uploads/profils/' ~ event.creator.picture) : asset('assets/images/default-img/default_avatar.jpg') }}" class="rounded-circle" style="object-fit: cover;" width="50" height="50" alt="image de profil par défaut" title="Organisateur de l'evenement">
             <p class="fw-bold m-3">
              {% if event.creator %}
             {{ event.creator.firstName }} {{ event.creator.lastName }}
@@ -139,7 +138,7 @@
     </div>
 {# ----------------------- Fin modal ---------------------------------------------  #}
 
-                {% if app.user and app.user.id == event.creator.id %}
+                {% if app.user and app.user.id != event.creator.id %}
 
         <!-- début Bande de réservation -->
         <div class="d-flex align-items-center justify-content-between border border-yoopla-primary rounded-top-4 p-3 position-sticky shadow bottom-0 bg-white <?= $hiddenClass ?>">

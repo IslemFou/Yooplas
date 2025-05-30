@@ -6,13 +6,13 @@
         <!-- Bloc d'informations utilisateur -->
         <div class="col-6">
             <div class="container">
-                <div class="card-header bg-primary text-white">
-                    Mes informations
+                <div class="card-header bg-info-subtle text-white">
+                    <h5 class="fs-4 text-center p-3 text-dark">Mes informations</h5>
                 </div>
                 <div class="card-body">
                     {% if user.picture %}
                         <div class="text-center mb-3">
-                            <img src="{{ asset('uploads/profile/' ~ user.picture) }}" alt="Photo de profil" class="rounded-circle" width="120">
+                            <img src="{{ asset('uploads/profils/' ~ user.picture) }}" alt="Photo de profil" class="rounded-circle" width="120">
                         </div>
                     {% endif %}
                     <p><strong>Email :</strong> {{ user.email }}</p>
@@ -25,26 +25,30 @@
         </div>
 
         <!-- Bloc de formulaire -->
-        <div class="col-6">
+        {# <div class="col-6">
             <div class="container">
-                <div class="card-header bg-secondary text-white">
-                    Modifier mes informations
+                <div class="card-header bg-warning-subtle text-white">
+                    <h5 class="fs-4 text-center p-3 text-dark">Modifier mes informations</h5>
                 </div>
                 <div class="card-body">
                     {{ form_start(accountForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+                    {% if user.picture %}
+                        <div class="text-center mb-3">
+                            <img id="image-preview" src="{{ asset('uploads/profils/' ~ user.picture) }}" alt="Photo de profil" class="rounded-circle" width="120" height="120" style="object-fit: cover;">
+                        </div>
+                    {% else %}
+                        <img id="image-preview" class="d-none rounded-circle mb-3" width="120">
+                    {% endif %}
                         {{ form_row(accountForm.picture) }}
                         {{ form_row(accountForm.firstName) }}
                         {{ form_row(accountForm.lastName) }}
                         {{ form_row(accountForm.civility) }}
-                    
                         {{ form_row(accountForm.email) }}
-            
-                        {{ form_row(accountForm.roles) }}
                         {{ form_row(accountForm.submit) }}
                     {{ form_end(accountForm) }}
                 </div>
             </div>
-        </div>
+        </div> #}
     </div>
 </div>
 {% endblock %}

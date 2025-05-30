@@ -21,9 +21,11 @@ class AccountTypeForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-                ->add('picture', FileType::class, [
+                ->add('pictureFile', FileType::class, [
                 'label' => 'Photo de profil (PNG, JPG)',
                 'mapped' => false,
+                'required' => false,
+                 'data_class' => null, // nécessaire pour ne pas forcer un objet File si null
                 'constraints' => [
                     new File([
                         'maxSize' => '2M',
@@ -35,20 +37,9 @@ class AccountTypeForm extends AbstractType
                     ]),
                 ],
                 'attr' => [
-                    'placeholder' => 'Téléchargez votre photo de profil',
-                    // 'alt' => 'Photo de profil',
-                    // 'class' => 'form-control mb-3 photoProfil rounded-circle border border-2 border-white mb-2',
-                ]
-                ])
-                ->add('roles', ChoiceType::class, [
-                'label' => 'Rôles',
-                'choices' => [
-                    'Utilisateur' => 'ROLE_USER',
-                    'Administrateur' => 'ROLE_ADMIN',
+                    'accept' => 'image/png,image/jpeg', // Limite les extensions dans le navigateur
+                    'class' => 'form-control mb-3',
                 ],
-                'expanded' => true, // coche (checkbox)
-                'multiple' => true,
-                'required' => true,
             ])
             ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
@@ -73,7 +64,7 @@ class AccountTypeForm extends AbstractType
                 'class' => Civility::class,
             ])
 
-                ->add('submit', SubmitType::class, [
+            ->add('submit', SubmitType::class, [
                 'label' => 'Mettre à jour mon compte',
             ])
         ;

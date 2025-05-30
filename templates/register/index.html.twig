@@ -33,9 +33,10 @@
             <!-- formulaire d'inscription -->
             <div class=" w-75 m-auto rounded-4" style="background-color:rgb(255, 225, 225);">
                 <fieldset class="border-0 p-4">
-                    <legend class="text-center m-3 fw-regular">S'inscrire sur Yoopla</legend>
+                    <legend class="text-center m-3 fw-regular">S'inscrire à Yoopla</legend>
 
                     {{ form(RegisterForm)}}
+                    
                     <p class="mt-5 text-center">Vous avez dèjà un compte ! <a href="{{ path('app_login')}}" class=" text-yoopla-blue fw-medium">connectez-vous</a></p>
                 </fieldset>
             </div>

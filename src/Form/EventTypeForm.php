@@ -51,6 +51,16 @@ class EventTypeForm extends AbstractType
                     'class' => 'form-control col-6'
                 ]
             ])
+                ->add('newCategory', TextType::class, [
+        'mapped' => false, // important car ce champ ne correspond pas à une propriété de l’entité
+        'required' => false,
+        'label' => 'Ajouter une nouvelle catégorie',
+        'attr' => [
+            'class' => 'form-control col-6',
+            'placeholder' => 'Nom de la nouvelle catégorie'
+        ]
+    ])
+
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
                 'attr' => ['placeholder' => 'Description de l\'événement']
