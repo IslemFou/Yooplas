@@ -27,11 +27,13 @@ final class EventController extends AbstractController
         // Récupère la liste de tous les événements
         $events = $eventRepository->findAll();
         // }
+        $uEvents = []; //on initialise un tableau vide pour les événements de l'utilisateur  
 
 
         // Passe la variable 'events' à la vue
         return $this->render('event/index.html.twig', [
             'events' => $events, // Cette ligne passe les événements à la vue
+            'uEvents' => $uEvents, // Ajoute les événements de l'utilisateur si nécessaire
         ]);
     }
 
@@ -47,10 +49,12 @@ final class EventController extends AbstractController
 
         // Récupère les événements créés par l'utilisateur connecté
         $uEvents = $eventRepository->findBy(['creator' => $user]);
+        $events = [];
         
 
         return $this->render('event/index.html.twig', [
             'uEvents' => $uEvents,
+            'events' => $events, // Passe les événements de l'utilisateur à la vue
         ]);
     }
 
