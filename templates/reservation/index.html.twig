@@ -1,7 +1,56 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}page reservation{% endblock %}
 
 {% block body %}
+
+<div class="container">
+    <h1 class="mt-4">Mes Reservations</h1>
+    <p>Bienvenue sur la page de gestion de vos réservations. Vous pouvez consulter et gérer vos réservations d'événements ici.</p> 
+{% if reservations is not empty %}
+    
+ {# Users table start  #}
+            <div class="table-responsive">
+                <table class="table table-hover table-borderless">
+                    <thead>
+                        <tr>
+                            <th>Num de reservation</th>
+                            <th>Titre de l'evenement</th>
+                            <th>Date de reservation</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        <tr>
+                         {% for reserva in reservations %}
+                                    <td>{{ reserva.id }}</td>
+                                    <td>
+                                        <a href="" class="text-decoration-none fw-medium text-yoopla-blue" title="voir l'evenement">{% if reserva.event %}{{ reserva.event.title }}{% else %}N/A{% endif %}</a>
+                                    </td>
+                                    <td>{{ reserva.getDateReservation()|date('Y-m-d H:i:s') }}</td>
+                                    <td>{{ reserva.status.name }}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">Actions</button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" href="#">Annuler ma réservation</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                            {% endfor %}
+                                </tr>
+                   {% else %}
+                    <p>You have no reservations.</p>
+                    {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+          {# Users table end  #}
+          </div> 
 
 {% endblock %}

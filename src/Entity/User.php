@@ -84,10 +84,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->pictureFile = $pictureFile;
     }
 
-
-
-
-
     public function __construct()
     {
         $this->UserEvents = new ArrayCollection();

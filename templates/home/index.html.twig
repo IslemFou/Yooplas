@@ -7,8 +7,8 @@
 <!-- Section 1:banniere -->
 <section class="container-fluid mt-5" id="sectionBanniere">
   <div class="container-sm w-75">
-    <h1 class="display-4 p-4 text-center">Découvrez <span class="text-yoopla-red">les activités</span> près de <span class="text-yoopla-blue">chez-vous</span> !</h1>
-    <p class="fs-4 p-4"><span class="text-yoopla-red fw-bold">Yoopla</span> est un site de reservation des évènements, activités culturelles ou sportive.</p>
+    <h1 class="display-4 p-4 text-center">Découvrez <span class="text-yoopla-red">les événements</span> près de <span class="text-yoopla-blue">chez-vous</span> !</h1>
+    <p class="fs-4 p-4"><span class="text-yoopla-red fw-bold">Yooplas</span> est un site de reservation des évènements, activités culturelles ou sportive.</p>
   </div>
   <div class="bloc-images mx-2 px-4 position-relative">
     <img src="assets/images/logo/cyclism-deco.svg" class="position-absolute bottom-0 start-10 translate-middle-x" style="width: 13rem;" alt="vecteurcyclisme">
@@ -36,14 +36,14 @@
 		<div class="container m-5 rounded-5 shadow p-2 mx-auto d-flex justify-content-around align-items-center w-75">
 
 			<div class="form-floating border-0">
-				<input type="search" name="city" class="form-control border-0" id="searchLocation" placeholder="Paris ..." aria-label="Lieu">
+				<input type="search" name="city" class="form-control border-0 bg-transparent" id="searchLocation" placeholder="Paris ..." aria-label="Lieu">
 				<label for="searchLocation"><i class="bi bi-geo me-2"></i>Lieu souhaité</label>
 			</div>
 			<p class="fw-bold fs-5 text-yoopla-red">Ou</p>
 
 			<div class="form-floating border-0">
-				<input type="search" name="title" class="form-control border-0" id="searchEvent" placeholder="Activité, événement ..." aria-label="Événement">
-				<label for="searchEvent"><i class="bi bi-balloon me-2"></i>Événement souhaité</label>
+				<input type="search" name="title" class="form-control border-0 bg-transparent" id="searchEvent" placeholder="Activité, événement ..." aria-label="Événement">
+				<label for="searchEvent" class="bg-transparent"><i class="bi bi-balloon me-2"></i>Événement souhaité</label>
 			</div>
 
 			<div>
@@ -51,11 +51,10 @@
 					<i class="bi bi-search-heart text-yoopla-red fs-3"></i>
 				</button>
 			</div>
-
 		</div>
 	</form>
   {# Résultat de la recherche #}
-{% if result is defined %}
+{% if result is defined and result|length > 0 %}
     {% if result is not empty %}
         <div class="container rounded-3 p-3">
             <h5 class="fw-medium text-center p-4">Résultats de recherche :</h5>
@@ -94,7 +93,7 @@
         </div>
     {% endif %}
 {% endif %}
-	<!-- Résultat de recherche -->
+	<!-- fin Résultat de recherche -->
 
 <!-- Section 3: activités en cours-->
 <section class="container" id="section-activites">
@@ -105,9 +104,9 @@
   <div id="yooplaCarousel" class="carousel slide">
     <div class="carousel-inner">
       
-{% if allEvents is empty %}
-    <div class="alert alert-warning text-center">Aucun événement trouvé pour le moment.</div>
-{% else %}
+{# {% if allEvents is defined %} #}
+    {# <div class="alert alert-warning text-center">Aucun événement trouvé pour le moment.</div> #}
+{# {% else %} #}
     {% set eventChunks = allEvents|batch(3) %}
     <div id="yooplaCarousel" class="carousel slide">
         <div class="carousel-inner">
@@ -132,7 +131,7 @@
                                     <p class="card-text">{{  (event.description|length > 90 ? event.description[:90] ~ '...' : event.description)|raw }}</p>
                                 </div>
                                 <div class="mt-auto text-center">
-                                    <a href="{{ path('app_event', { slug: event.slug }) }}"
+                                    <a href="{{ path('event_show', { id: event.id }) }}"
                                        class="btn yoopla-primary fw-medium rounded-5 px-4 py-2 shadow mb-3">Voir plus</a>
                                 </div>
                             </div>
@@ -144,16 +143,16 @@
 
         {% if allEvents|length > 3 %}
             <button class="carousel-control-prev" type="button" data-bs-target="#yooplaCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="carousel-control-prev-icon bg-danger rounded rounded-4" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#yooplaCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="carousel-control-next-icon bg-danger rounded rounded-4" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         {% endif %}
     </div>
-{% endif %}
+{# {% endif %} #}
 
   <!-- fin carousel -->
 

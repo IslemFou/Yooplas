@@ -255,9 +255,6 @@ class Event
         return $this;
     }
 
-
-
-
     public function getCreator(): ?User
     {
         return $this->creator;

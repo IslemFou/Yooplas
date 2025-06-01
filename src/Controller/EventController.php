@@ -7,6 +7,7 @@ use App\Form\EventTypeForm;
 use App\Repository\EventRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ReservationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -128,7 +129,7 @@ final class EventController extends AbstractController
 
 
     #[Route('/event/{slug}', name: 'app_event', defaults: ['slug' => null])]
-    public function eventSlug($slug, EventRepository $eventRepository): Response
+    public function eventSlug($slug, EventRepository $eventRepository,ReservationRepository $reservationRepository): Response
     {
         // Récupère l'événement par son slug
         $event = $eventRepository->findOneBySlug($slug);
@@ -139,12 +140,54 @@ final class EventController extends AbstractController
         if (!$event) {
             throw $this->createNotFoundException('Événement non trouvé');
         }
+         $user = $this->getUser();
+        $hasReserved = false;
+
+        if ($user) {
+        $existingReservation = $reservationRepository->findOneBy([
+            'event' => $event,
+            'user' => $user,
+        ]);
+
+        if ($existingReservation) {
+            $hasReserved = true;
+        }
+    }
 
         // Passe l'événement à la vue
         return $this->render('event/show.html.twig', [
             'event' => $event, // Change la variable pour "event" ici
             'events' => $events, // Cette ligne passe les événements à la vue
+            'hasReserved' => $hasReserved, // Passer la variable au template
+        ]);
+    }
 
+        #[Route('/event/details/{id}', name: 'event_show', methods: ['GET'])]
+    public function show(int $id, EventRepository $eventRepository, ReservationRepository $reservationRepository): Response
+    {
+        $event = $eventRepository->find($id);
+
+        if (!$event) {
+            throw $this->createNotFoundException('Event not found');
+        }
+
+        $user = $this->getUser();
+        $hasReserved = false;
+
+        if ($user) {
+            $existingReservation = $reservationRepository->findOneBy([
+                'event' => $event,
+                'user' => $user,
+            ]);
+
+            if ($existingReservation) {
+                $hasReserved = true;
+            }
+        }
+
+        return $this->render('event/show.html.twig', [
+            'event' => $event,
+            'hasReserved' => $hasReserved, // Passer la variable au template
         ]);
     }
 
@@ -156,37 +199,37 @@ final class EventController extends AbstractController
     SluggerInterface $slugger,
     EventRepository $eventRepository
     ): Response {
-    $event = $eventRepository->find($id);
+        $event = $eventRepository->find($id);
 
-    if (!$event) {
-        throw $this->createNotFoundException('Événement non trouvé');
-    }
-
-    $form = $this->createForm(EventTypeForm::class, $event);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $photo = $form->get('photo')->getData();
-
-        if ($photo) {
-            $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-            $safePhoto = $slugger->slug($originalFilename);
-            $newPhoto = $safePhoto . '-' . uniqid() . '.' . $photo->guessExtension();
-
-            try {
-                $photo->move($this->getParameter('event_directory'), $newPhoto);
-                $event->setPhoto($newPhoto);
-            } catch (FileException $e) {
-                $this->addFlash('error', 'Erreur lors de l\'upload de l\'image');
-            }
+        if (!$event) {
+            throw $this->createNotFoundException('Événement non trouvé');
         }
 
-        $slug = $slugger->slug($event->getTitle());
-        $event->setSlug($slug . '-' . uniqid());
+        $form = $this->createForm(EventTypeForm::class, $event);
+        $form->handleRequest($request);
 
-        $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $photo = $form->get('photo')->getData();
 
-        return $this->redirectToRoute('app_event', ['slug' => $event->getSlug()]);
+            if ($photo) {
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $safePhoto = $slugger->slug($originalFilename);
+                $newPhoto = $safePhoto . '-' . uniqid() . '.' . $photo->guessExtension();
+
+                try {
+                    $photo->move($this->getParameter('event_directory'), $newPhoto);
+                    $event->setPhoto($newPhoto);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Erreur lors de l\'upload de l\'image');
+                }
+            }
+
+            $slug = $slugger->slug($event->getTitle());
+            $event->setSlug($slug . '-' . uniqid());
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_event', ['slug' => $event->getSlug()]);
     }
 
     return $this->render('event/edit.html.twig', [
@@ -210,7 +253,6 @@ final class EventController extends AbstractController
             throw $this->createNotFoundException('Événement non trouvé');
         }
 
-        // if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
             $entityManager->remove($event);
             $entityManager->flush();
             $this->addFlash('success', 'Événement supprimé avec succès');
@@ -219,18 +261,18 @@ final class EventController extends AbstractController
         return $this->redirectToRoute('user_events');
     }
 
-#[Route('/evenements', name: 'event_search')]
-public function search(Request $request, EventRepository $eventRepository): Response
-{
-    $city = $request->request->get('city');
-    $title = $request->request->get('title');
+    #[Route('/evenements', name: 'event_search')]
+    public function search(Request $request, EventRepository $eventRepository): Response
+    {
+        $city = $request->request->get('city');
+        $title = $request->request->get('title');
 
-    // Recherche conditionnelle
-    $searchResults = $eventRepository->searchEvents($city, $title);
+        // Recherche conditionnelle
+        $searchResults = $eventRepository->searchEvents($city, $title);
 
-    return $this->render('event/search.html.twig', [
-        'searchResults' => $searchResults,
-    ]);
-}
+        return $this->render('event/search.html.twig', [
+            'searchResults' => $searchResults,
+        ]);
+    }
 
 }

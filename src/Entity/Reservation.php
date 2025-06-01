@@ -21,6 +21,11 @@ class Reservation
     #[ORM\JoinColumn(name: 'id_user', referencedColumnName: 'id', nullable: false)]
     private ?User $user = null;
 
+    // Relation ManyToOne avec Event
+    #[ORM\ManyToOne(targetEntity: Event::class)]
+    #[ORM\JoinColumn(name: 'id_event', referencedColumnName: 'id', nullable: false)]
+    private ?Event $event = null; 
+
     // Getter et Setter pour la propriété user
     public function getUser(): ?User
     {
@@ -30,6 +35,18 @@ class Reservation
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event  // Add this getter
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): self  // Add this setter
+    {
+        $this->event = $event;
 
         return $this;
     }
