@@ -41,6 +41,20 @@ final class RegisterController extends AbstractController
             $passwordHasher = $userPasswordHasherInterface->hashPassword($user, $password);
             $user->setPassword($passwordHasher);
 
+            // Définir l'image de profil par défaut
+            $projectDir = $this->getParameter('kernel.project_dir');
+            $defaultPicturePath = $projectDir . '/public/assets/images/default-img/defaul_avatar.jpg'; // Chemin complet vers l'image par défaut
+
+            // Vérifiez si le fichier existe avant de l'attribuer
+            if (file_exists($defaultPicturePath)) {
+                $defaultPicture = 'default.png'; // Nom de l'image par défaut
+                $user->setPicture($defaultPicture);
+            } else {
+                // Gérez le cas où l'image par défaut n'existe pas
+                $this->addFlash('error', 'Image de profil par défaut introuvable.');
+                // Vous pouvez définir une image par défaut temporaire ou empêcher l'enregistrement de l'utilisateur
+            }
+
             $entityManager->persist($user); // On dit à Doctrine de persister l'objet $user, c'est-à-dire de le préparer pour l'insertion dans la base de données
             $entityManager->flush(); // On envoie la requête à la base de données pour enregistrer l'utilisateur
 

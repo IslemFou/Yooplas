@@ -34,6 +34,7 @@
 <!-- search bar -->
 	<form method="GET" action="{{ path('app_home') }}" title="Formulaire de recherche">
 		<div class="container m-5 rounded-5 shadow p-2 mx-auto d-flex justify-content-around align-items-center w-75">
+     <input type="hidden" name="anchor" value="first-event">
 
 			<div class="form-floating border-0">
 				<input type="search" name="city" class="form-control border-0 bg-transparent" id="searchLocation" placeholder="Paris ..." aria-label="Lieu">
@@ -55,8 +56,8 @@
 	</form>
   {# Résultat de la recherche #}
 {% if result is defined and result|length > 0 %}
-    {% if result is not empty %}
-        <div class="container rounded-3 p-3">
+{% if result is not empty %}
+        <div class="container rounded-3 p-3" id="first-event">
             <h5 class="fw-medium text-center p-4">Résultats de recherche :</h5>
             <div class="d-flex flex-wrap justify-content-center">
             {% for eventSearch in result %}
@@ -161,5 +162,17 @@
   </div>
 </section>
 
-
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if anchor is defined and anchor %}
+                let element = document.getElementById('{{ anchor }}');
+                if (element) {
+                    element.scrollIntoView({
+                        behavior: 'smooth' // Optional: for smooth scrolling
+                    });
+                }
+            {% endif %}
+        });
+    </script>
 {% endblock %}

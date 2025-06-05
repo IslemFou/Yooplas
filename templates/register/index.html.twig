@@ -35,7 +35,15 @@
                 <fieldset class="border-0 p-4">
                     <legend class="text-center m-3 fw-regular">S'inscrire à Yoopla</legend>
 
-                    {{ form(RegisterForm)}}
+                    {{ form_row(RegisterForm.firstName) }}
+                    {{ form_row(RegisterForm.lastName) }}
+                    {{ form_row(RegisterForm.civility) }}
+                    {{ form_row(RegisterForm.email) }}
+                    {{ form_row(RegisterForm.password) }}
+
+                    <div class="text-center">
+                        {{ form_row(RegisterForm.submit) }}
+                    </div>
                     
                     <p class="mt-5 text-center">Vous avez dèjà un compte ! <a href="{{ path('app_login')}}" class=" text-yoopla-blue fw-medium">connectez-vous</a></p>
                 </fieldset>

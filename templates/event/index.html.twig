@@ -3,10 +3,10 @@
 {% block title %}Event List{% endblock %}
 
 {% block body %}
+    <h1 class="fs-5 text-center mb-5">Mes événements</h1>
 
     {% if uEvents is not empty %} 
 <section class="container mt-5"> 
-    <h1 class="fs-5 text-center mb-5">Mes événements</h1>
         
         {% for event in uEvents %}
                 {% set event_id = event.id %}
@@ -47,6 +47,9 @@
   <!-- end horzontal card -->
       {% endfor %}
             </section>
+      {% else %}
+        <p class="container mt-5">Aucun événement trouvé.</p>
+
      {% endif %}
 
 <section class="container mt-5">

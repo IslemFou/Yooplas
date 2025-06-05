@@ -13,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AccountTypeForm extends AbstractType
@@ -21,11 +20,11 @@ class AccountTypeForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-                ->add('pictureFile', FileType::class, [
+            ->add('pictureFile', FileType::class, [
                 'label' => 'Photo de profil (PNG, JPG)',
                 'mapped' => false,
                 'required' => false,
-                 'data_class' => null, // nécessaire pour ne pas forcer un objet File si null
+                'data_class' => null, // nécessaire pour ne pas forcer un objet File si null
                 'constraints' => [
                     new File([
                         'maxSize' => '2M',
@@ -68,7 +67,6 @@ class AccountTypeForm extends AbstractType
                 'label' => 'Mettre à jour mon compte',
             ])
         ;
-            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

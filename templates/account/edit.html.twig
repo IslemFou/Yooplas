@@ -1,4 +1,4 @@
-:{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 
 
@@ -20,7 +20,7 @@
             <img src="{{ asset('uploads/profils/' ~ user.picture) }}" style="object-fit: cover;" alt="Photo de profil" width="150" class="img-thumbnail">
         </div>
     {% endif %}
-    {{ form_row(accountForm.picture) }}
+    {{ form_row(accountForm.pictureFile) }}
     {{ form_row(accountForm.firstName) }}
     {{ form_row(accountForm.lastName) }}
     {{ form_row(accountForm.civility) }}

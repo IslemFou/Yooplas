@@ -110,7 +110,7 @@ class RegisterUserTypeForm extends AbstractType
 
             // ->add('confirmPassword')
             ->add('submit', SubmitType::class, [
-                'attr' => ['class' => 'btn btn-yoopla-primary fs-5 text-center btn-lg fw-regular rounded-5 shadow m-3 col-md-6 col-sm-12 text-center'],
+                'attr' => ['class' => 'btn btn-yoopla-primary fs-5 btn-lg fw-regular rounded-5 shadow m-3 col-md-6 col-sm-12 text-center'],
                 'label' => 'S\'inscrire'
             ])
         ;

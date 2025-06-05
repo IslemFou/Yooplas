@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, EventRepository $eventRepository, CategoryRepository $categoryRepository ): Response
+    public function index(Request $request, EventRepository $eventRepository, CategoryRepository $categoryRepository): Response
     {
 
         if (!$this->getUser()) {
@@ -24,8 +24,8 @@ final class HomeController extends AbstractController
         // $event = $eventRepository->find($id);
         // $event = $eventRepository->findOneBy(['slug' => $slug]);
 
-         $categories = $categoryRepository->findAll();
-        
+        $categories = $categoryRepository->findAll();
+
         $result = [];
 
         $info = null;
@@ -33,21 +33,34 @@ final class HomeController extends AbstractController
         if ($request->isMethod('GET')) {
             $city = trim($request->query->get('city'));
             $title = trim($request->query->get('title'));
+            $anchor = trim($request->query->get('anchor'));
 
             if (empty($city) && empty($title)) {
                 $info = ['type' => 'danger', 'message' => 'Veuillez entrer un terme de recherche.'];
             } else {
                 $result = $eventRepository->searchByCityAndTitle($city, $title);
+
+                $url = $this->generateUrl('app_home', [
+                    'city' => $city,
+                    'title' => $title,
+                ]);
+
+                if (!empty($anchor)) {
+                    $url .= '#' . $anchor;
+                }
+
+                // return $this->redirect($url);
             }
         }
         // dd($categories);
 
-        return $this->render('home/index.html.twig',[
-             'allEvents' => $events,
+        return $this->render('home/index.html.twig', [
+            'allEvents' => $events,
             'limitedEvents' => $limitedEvents,
             'result' => $result,
             'info' => $info,
             'categories' => $categories,
+            'anchor' => $anchor
         ]);
     }
 }
