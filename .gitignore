@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -10,16 +9,16 @@
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
-/phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
+# Ignore Symfony binary cache (facultatif)
+.Symfony*
 
-###> symfony/asset-mapper ###
-# /public/assets/
-# /assets/vendor/
-###< symfony/asset-mapper ###
+# IDEs & environnement local (facultatif, utile en équipe)
+/.idea/
+/.vscode/
+/*.iml
+
+# Couverture de test (si utilisée)
+/coverage/
