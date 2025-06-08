@@ -14,3 +14,9 @@ cd yooplas
 
 composer install
 
+
+# user admin
+
+
+admin: islem.fourati55@gmail.com
+Test@123 

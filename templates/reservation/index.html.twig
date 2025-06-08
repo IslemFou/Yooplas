@@ -19,19 +19,19 @@
                             <th>Titre de l'evenement</th>
                             <th>Date de reservation</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            {# <th>Actions</th> #}
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
-                        <tr>
                          {% for reserva in reservations %}
+                        <tr>
                                     <td>{{ reserva.id }}</td>
                                     <td>
                                         <a href="" class="text-decoration-none fw-medium text-yoopla-blue" title="voir l'evenement">{% if reserva.event %}{{ reserva.event.title }}{% else %}N/A{% endif %}</a>
                                     </td>
                                     <td>{{ reserva.getDateReservation()|date('Y-m-d H:i:s') }}</td>
                                     <td>{{ reserva.status.name }}</td>
-                                    <td>
+                                    {# <td>
                                         <div class="dropdown">
                                             <button class="btn btn-default dropdown-toggle" type="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">Actions</button>
@@ -41,9 +41,9 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </td>
-                            {% endfor %}
+                                    </td> #}
                                 </tr>
+                            {% endfor %}
                    {% else %}
                     <p>You have no reservations.</p>
                     {% endif %}
