@@ -1,11 +1,6 @@
 # Yooplas
 Yoopla est un site de réservation d'activités culturelles, sportive ou évènement.
 
-# Mon compte admin
-
-islem.fourati55@gmail.com
-Test@123 
-
 
 ## 🔧 Prérequis
 
@@ -21,5 +16,6 @@ Test@123
 # git clone 
 # cd yooplas
 # composer install
+<img width="2493" height="1870" alt="iPad Mini" src="https://github.com/user-attachments/assets/f8835b18-81f0-469b-bd83-cdd7cadb1860" />
 
 
